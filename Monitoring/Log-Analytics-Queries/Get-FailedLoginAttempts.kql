@@ -1,0 +1,23 @@
+// Query to identify failed login attempts from Azure Activity Logs
+// Useful for security monitoring and threat detection
+
+SigninLogs
+| where ResultType != "0"  // 0 = Success, non-zero = failure
+| where TimeGenerated >= ago(7d)
+| summarize 
+    FailedAttempts = count(),
+    DistinctUsers = dcount(UserPrincipalName),
+    DistinctIPs = dcount(IPAddress),
+    LastAttempt = max(TimeGenerated)
+    by UserPrincipalName, IPAddress, ResultType, AppDisplayName
+| order by FailedAttempts desc
+| project 
+    UserPrincipalName,
+    IPAddress,
+    ResultType,
+    AppDisplayName,
+    FailedAttempts,
+    DistinctUsers,
+    DistinctIPs,
+    LastAttempt
+

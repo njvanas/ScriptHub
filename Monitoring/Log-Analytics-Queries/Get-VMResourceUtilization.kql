@@ -1,0 +1,22 @@
+// Query to analyze VM resource utilization from Azure Metrics
+// Helps identify underutilized or overutilized VMs for cost optimization
+
+Perf
+| where TimeGenerated >= ago(30d)
+| where ObjectName == "Processor" or ObjectName == "Memory"
+| where CounterName == "% Processor Time" or CounterName == "Available MBytes"
+| summarize 
+    AvgValue = avg(CounterValue),
+    MaxValue = max(CounterValue),
+    MinValue = min(CounterValue),
+    P95Value = percentile(CounterValue, 95)
+    by Computer, ObjectName, CounterName, bin(TimeGenerated, 1d)
+| extend 
+    UtilizationCategory = case(
+        CounterName == "% Processor Time" and AvgValue < 20, "Underutilized",
+        CounterName == "% Processor Time" and AvgValue > 80, "Overutilized",
+        CounterName == "Available MBytes" and AvgValue > 80, "Underutilized",
+        "Normal"
+    )
+| order by Computer, TimeGenerated desc
+

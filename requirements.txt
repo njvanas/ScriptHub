@@ -1,0 +1,28 @@
+# Azure PowerShell Modules
+# Install with: Install-Module -Name <ModuleName> -Force -AllowClobber -Scope CurrentUser
+
+# Core Azure Modules
+Az.Accounts >= 2.12.0
+Az.Resources >= 6.7.0
+Az.Compute >= 5.0.0
+Az.Network >= 6.0.0
+Az.Storage >= 5.0.0
+Az.KeyVault >= 4.10.0
+Az.Security >= 1.1.0
+Az.Monitor >= 3.0.0
+Az.PolicyInsights >= 1.5.0
+Az.RecoveryServices >= 6.0.0
+Az.Consumption >= 2.0.0
+
+# Microsoft Graph Modules (for Intune)
+Microsoft.Graph.DeviceManagement >= 2.0.0
+Microsoft.Graph.Identity.DirectoryManagement >= 2.0.0
+
+# Terraform
+# Download from: https://www.terraform.io/downloads
+# Recommended version: >= 1.5.0
+
+# Azure CLI (optional, for some operations)
+# Download from: https://docs.microsoft.com/en-us/cli/azure/install-azure-cli
+# Recommended version: >= 2.50.0
+
